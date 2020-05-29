@@ -43,15 +43,17 @@ rm(subject_test, subject_train,
 complete <- cbind.data.frame(subject, y_data)
 complete <- cbind.data.frame(complete, X_data)
 
-# Vector with the columns with mean() or std() in their name
+# Vector with the columns with mean. or std. in their name
 
-names <- grep('mean()|std()', names(complete), value = TRUE)
+names <- grep('mean\\.|std\\.', names(complete), value = TRUE)
 
 # Subset of the complete data frame using only the descriptive columns
 #  and the ones selected in the vector 'names'
 
 df1 <- select(complete, subject:activityName, names) %>%
    arrange(subject, activityId)
+
+write.table(df1, 'dataset 1.txt', row.name = FALSE)
 
 # Independent grouping of the data frame 'df1' by 'subject' and 'activityId'
 
@@ -61,4 +63,5 @@ df2 <- group_by(df1, subject, activityName) %>%
 # Summary of the data frame with the mean of each variable
 
 df2 <- summarise_all(df2, mean)
-   
+
+write.table(df2, 'dataset 2.txt', row.name = FALSE)
